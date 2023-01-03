@@ -16,7 +16,7 @@ spec:
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: mysql-app
+  name: mysql-pvc
   namespace: default
   labels:
     app: app-deploy
@@ -67,5 +67,5 @@ spec:
       volumes:
       - name: mysql-foro
         persistentVolumeClaim:
-          claimName: mysql-foro
+          claimName: mysql-pvc
 
