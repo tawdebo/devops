@@ -1,18 +1,18 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: foro-deploy
+  name: app-deploy
   namespace: default
 spec:
   replicas: 3
   selector:
     matchLabels:
-      app: foro-deploy
+      app: app-deploy
   template:
     metadata:
       creationTimestamp: null
       labels:
-        app: foro-deploy
+        app: app-deploy
     spec:
       containers:
       - env:
