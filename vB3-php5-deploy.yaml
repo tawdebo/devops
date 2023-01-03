@@ -1,0 +1,46 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: foro-deploy
+  namespace: default
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: foro-deploy
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: foro-deploy
+    spec:
+      containers:
+      - env:
+        - name: APP_DB_HOST
+          value: app-mysql
+        - name: APP_DB_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              key: password
+              name: mysql-pass
+        image: tawdeb/php5-build:1.0.0
+        imagePullPolicy: Always
+        name: php5-deploy
+        ports:
+        - containerPort: 80
+          protocol: TCP
+        resources: {}
+        volumeMounts:
+        - mountPath: /var/www/html
+          name: forodata
+        - mountPath: /usr/local/etc/php/conf.d/custom.ini
+          name: config-volume
+          subPath: custom.ini
+      volumes:
+      - name: forodata
+        persistentVolumeClaim:
+          claimName: foro-pvc
+      - configMap:
+          defaultMode: 420
+          name: custom-ini
+        name: config-volume
