@@ -11,6 +11,22 @@ spec:
   selector:
     app: app-deploy
 ---
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: app-pvc
+  namespace: default
+  labels:
+    app: app-deploy
+spec:
+  storageClassName: nfs
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 2Gi
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -52,7 +68,7 @@ spec:
       volumes:
       - name: forodata
         persistentVolumeClaim:
-          claimName: foro-pvc
+          claimName: app-pvc
       - configMap:
           defaultMode: 420
           name: custom-ini
